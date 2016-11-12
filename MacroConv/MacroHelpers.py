@@ -1,5 +1,7 @@
 import os.path
 
+#Misc helper functions for other programs
+
 #Basic filetype detection heuristics
 def detectFileType(file):
     if os.path.splitext(file.name)[-1].lower() == '.mir':
@@ -19,3 +21,4 @@ def detectFileType(file):
         file.seek(origin)
         
         return returnval
+    

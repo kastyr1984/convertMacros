@@ -1,10 +1,10 @@
 import os.path
 import re
 
-from macroHelpers import detectFileType
+from MacroLib.MacroHelpers import detectFileType
 
-from NoxMacroHandler import NoxMacroHandler
-from MEmuMacroHandler import MEmuMacroHandler
+from MacroLib.NoxMacroHandler import NoxMacroHandler
+from MacroLib.MEmuMacroHandler import MEmuMacroHandler
 
 #this script aims to take all the guesswork out of converting macro scripts
 #between MEmu and NOX
@@ -95,8 +95,6 @@ if __name__ == '__main__':
     parser.add_argument('--outtype', dest='outtype', required=True, \
                         help='output file type, nox or memu')
     
-    #parser.add_argument('--flip-xy', dest='flipxy', action='store_true', default=False,\
-    #                    help='flip output x and y values')
     parser.add_argument('--new-nox', dest='newnox', action='store_true', default=False,\
                             help='output nox files in ScRiPtSePaRaToR style')    
     

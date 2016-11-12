@@ -1,9 +1,9 @@
 import os.path
 
-from DataTypes import *
-from macroHelpers import detectFileType
-from MEmuMacroHandler import *
-from NoxMacroHandler import *
+from MacroLib.DataTypes import *
+from MacroLib.macroHelpers import detectFileType
+from MacroLib.MEmuMacroHandler import *
+from MacroLib.NoxMacroHandler import *
 
 def mergeMacros(infile, mergefile, outfile, outtype, outyRez=720, outxRez = 1280, \
                 inyRez = 720, inxRez = 1280, mergexRez = 720, mergeyRez = 1280, \
@@ -148,8 +148,6 @@ if __name__ == "__main__":
     parser.add_argument('--outtype', dest='outtype', required=True, \
                         help='output file type, nox or memu')
     
-    #parser.add_argument('--flip-xy', dest='flipxy', action='store_true', default=False,\
-    #                    help='flip output x and y values')
     parser.add_argument('--new-nox', dest='newnox', action='store_true', default=False,\
                             help='output nox files in ScRiPtSePaRaToR style')    
     
