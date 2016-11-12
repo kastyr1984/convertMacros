@@ -1,11 +1,21 @@
 import collections
 import re
 
+#this script aims to take all the guesswork out of converting macro scripts
+#between MEmu and NOX
+
+#all credit goes to /u/MLieBennett and /u/jcarl987 for giving me the tools to
+#succeed here, I never would have even started to figure half this stuff out
+#on my own
+
+#big shout out to /u/-Pwnology- for making the scripts that make this a
+#worthwhile endeavor in the first place
+
+MacroLine = collections.namedtuple('MacroLine', ['time', 'presscode', 'holdcode', 'xPos', 'yPos', 'inyRez', 'inxRez'])
+
 #namedtuple is a bit of an odd choice for use here, especially since there are
 #a couple of instances where we want to be able to alter data
 #but the speed benefits can help when things get really big
-
-MacroLine = collections.namedtuple('MacroLine', ['time', 'presscode', 'holdcode', 'xPos', 'yPos', 'inyRez', 'inxRez'])
 
 def processMEmuLine(instring, outyRez = 720, outxRez = 1280, inyRez = 720, inxRez = 1280):
     if '--VINPUT--MULTI:1' in instring:
