@@ -1,9 +1,9 @@
 import os.path
 
-from MacroLib.DataTypes import *
-from MacroLib.macroHelpers import detectFileType
-from MacroLib.MEmuMacroHandler import *
-from MacroLib.NoxMacroHandler import *
+from MacroConv.DataTypes import *
+from MacroConv.macroHelpers import detectFileType
+from MacroConv.MEmuMacroHandler import *
+from MacroConv.NoxMacroHandler import *
 
 def mergeMacros(infile, mergefile, outfile, outtype, outyRez=720, outxRez = 1280, \
                 inyRez = 720, inxRez = 1280, mergexRez = 720, mergeyRez = 1280, \
