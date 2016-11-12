@@ -1,4 +1,4 @@
-from DataTypes import *
+from DataTypes import MacroLine
 from NoxKeyMap import *
 
 class NoxMacroHandler:
@@ -8,7 +8,7 @@ class NoxMacroHandler:
     newnoxout = False
     handlertype = 'nox'
     
-    def __init__(self, outyRez, outxRez, noxKeyMap = None, newnoxout = False):
+    def __init__(self, outyRez = 720.0, outxRez = 1280.0, noxKeyMap = None, newnoxout = False):
         self.setOutRez(outyRez, outxRez)
         
         if noxKeyMap:

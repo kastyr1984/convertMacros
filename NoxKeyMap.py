@@ -1,7 +1,7 @@
 import os.path
 import xml.etree.ElementTree
 
-from DataTypes import *
+from DataTypes import KeyMapPoint
 
 filepath = os.path.dirname(os.path.realpath(__file__))
 

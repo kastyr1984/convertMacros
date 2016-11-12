@@ -1,7 +1,8 @@
 import os.path
 import re
 
-#from DataTypes import *
+from macroHelpers import detectFileType
+
 from NoxMacroHandler import NoxMacroHandler
 from MEmuMacroHandler import MEmuMacroHandler
 
@@ -14,24 +15,6 @@ from MEmuMacroHandler import MEmuMacroHandler
 
 #big shout out to /u/-Pwnology- for making the scripts that make this a
 #worthwhile endeavor in the first place
-
-#Basic filetype detection heuristics
-def detectFileType(file):
-    if os.path.splitext(file.name)[-1].lower() == '.mir':
-        return 'memu'
-    else:
-        origin = file.tell()
-        
-        inline = file.readline()
-        
-        if 'ScRiPtSePaRaToR' in inline:
-            return 'nox'
-        elif '--VINPUT--' in inline:
-            return 'memu'
-        elif '|' in inline:
-            return 'nox'
-        
-        file.seek(origin)
             
 def processFiles(infile, outfile, outtype, intype = None, outyRez=720, outxRez = 1280, inyRez = 720, inxRez = 1280, newnox = False, keymap = None):
     #basic filetype detection if intype is not provided
@@ -100,12 +83,12 @@ if __name__ == '__main__':
     parser.add_argument('--in-x', dest='inxRez', default=1280, type=int, \
                         help='input file x resolution, ignored for Nox files')
     parser.add_argument('--in-y', dest='inyRez', default=720, type=int, \
-                        help='input file x resolution, ignored for Nox files')
+                        help='input file y resolution, ignored for Nox files')
     
     parser.add_argument('--out-x', dest='outxRez', default=1280, type=int, \
                         help='output file x resolution')
     parser.add_argument('--out-y', dest='outyRez', default=720, type=int, \
-                        help='output file x resolution')
+                        help='output file y resolution')
     
     parser.add_argument('--intype', dest='intype', default=None, \
                         help='input file type, nox or memu')
