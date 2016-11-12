@@ -93,4 +93,4 @@ class MEmuMacroHandler:
     
     def generateLine(self, time, presscode, holdcode, xPos, yPos, *args):
         #Since we effectively treat the MEmu conventions as native, little conversion is really neccessary
-        return ''.join([str(time), '--VINPUT--MULTI:', presscode, ':', holdcode, ':', str(xPos), ':', str(yPos)])
+        return ''.join([str(int(time)), '--VINPUT--MULTI:', presscode, ':', holdcode, ':', str(int(xPos)), ':', str(int(yPos))])

@@ -62,7 +62,7 @@ class NoxMacroHandler:
         if inyRez != self.outyRez:
             yPos = round(yPos * (self.outyRez / float(inyRez)))
     
-        if inxRez != outxRez:
+        if inxRez != self.outxRez:
             xPos = round(xPos * (self.outxRez / float(inxRez)))
             
         return MacroLine(time = time, presscode = '1', holdcode = holdcode, xPos = xPos, yPos = yPos, inyRez = inyRez, inxRez = inxRez)
@@ -119,10 +119,10 @@ class NoxMacroHandler:
             yPos = int(yPos)
             
             #account for differing resolution settings
-            if inyRez != outyRez:
+            if inyRez != self.outyRez:
                 yPos = round(yPos * (self.outyRez / float(inyRez)))
             
-            if inxRez != outxRez:
+            if inxRez != self.outxRez:
                 xPos = round(xPos * (self.outxRez / float(inxRez)))   
             
             return MacroLine(time = time, presscode = '1', holdcode = holdcode, xPos = xPos, yPos = yPos, inyRez = inyRez, inxRez = inxRez)
@@ -152,15 +152,15 @@ class NoxMacroHandler:
         #Mash the values together, performing basic conversions where needed
         if not self.newnoxout:
             return('|'.join([holdcode, \
-                             str(self.outyRez - int(yPos)), \
-                             str(xPos), #str(outxRez - xPos), \
+                             str(int(self.outyRez - int(yPos))), \
+                             str(int(xPos)), #str(outxRez - xPos), \
                              '0', \
                              '0', \
                              '0', \
-                             str(round(float(time) / 1000.0)), \
-                             str(self.outyRez), \
-                             str(self.outxRez)]))
+                             str(int(round(float(time) / 1000.0))), \
+                             str(int(self.outyRez)), \
+                             str(int(self.outxRez))]))
         else:
-            return''.join(['0ScRiPtSePaRaToR', str(self.outxRez), '|', str(self.outyRez), \
-                           '|MULTI:', presscode, ':', holdcode, ':', str(xPos), ':', \
-                           str(yPos), 'ScRiPtSePaRaToR', str(round(float(time) / 1000.0))])       
+            return''.join(['0ScRiPtSePaRaToR', str(int(self.outxRez)), '|', str(int(self.outyRez)), \
+                           '|MULTI:', presscode, ':', holdcode, ':', str(int(xPos)), ':', \
+                           str(int(yPos)), 'ScRiPtSePaRaToR', str(int(round(float(time) / 1000.0)))])
