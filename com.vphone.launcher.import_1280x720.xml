@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Root>
+    <Scene horizonFlag="1" opacity="50" height="720" id="com.vphone.launcher" rotateAngle="0" width="1280">
+        <Item height="42" pos="149,559" type="1" width="60" finger_count="1684625268">
+            <Key value="67">
+                <Point>170,580</Point>
+            </Key>
+        </Item>
+        <Item height="42" pos="1100,143" type="1" width="60" finger_count="1">
+            <Key value="68">
+                <Point>1121,164</Point>
+            </Key>
+        </Item>
+        <Item height="50" pos="613,11" type="3" width="52">
+            <Key value="-6">
+                <Point>630,28</Point>
+            </Key>
+        </Item>
+        <Item height="42" pos="1037,208" type="1" width="60" finger_count="1">
+            <Key value="69">
+                <Point>1058,229</Point>
+            </Key>
+        </Item>
+    </Scene>
+</Root>
