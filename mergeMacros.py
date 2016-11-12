@@ -1,9 +1,9 @@
 import os.path
 
-from MacroConv.DataTypes import *
-from MacroConv.macroHelpers import detectFileType
-from MacroConv.MEmuMacroHandler import *
-from MacroConv.NoxMacroHandler import *
+from DataTypes import *
+from MacroHelpers import detectFileType
+from MEmuMacroHandler import *
+from NoxMacroHandler import *
 
 def mergeMacros(infile, mergefile, outfile, outtype, outyRez=720, outxRez = 1280, \
                 inyRez = 720, inxRez = 1280, mergexRez = 720, mergeyRez = 1280, \
@@ -135,9 +135,9 @@ if __name__ == "__main__":
     parser.add_argument('--in-y', dest='inyRez', default=720, type=int, \
                         help='input file y resolution, ignored for Nox files')
     
-    parser.add_argument('--in-x', dest='inxRez', default=1280, type=int, \
+    parser.add_argument('--merge-x', dest='mergexRez', default=1280, type=int, \
                         help='merge file x resolution, ignored for Nox files')
-    parser.add_argument('--in-y', dest='inyRez', default=720, type=int, \
+    parser.add_argument('--merge-y', dest='mergeyRez', default=720, type=int, \
                         help='merge file y resolution, ignored for Nox files')    
     
     parser.add_argument('--out-x', dest='outxRez', default=1280, type=int, \
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     if args.infile and args.mergefile and args.outfile and args.outtype:
         mergeMacros(args.infile, args.mergefile, args.outfile, args.outtype, \
                     outyRez = args.outyRez, outxRez = args.outxRez, \
-                    inyRez = args.inyRez, outxRez = args.inxRez, \
+                    inyRez = args.inyRez, inxRez = args.inxRez, \
                     mergeyRez = args.mergeyRez, mergexRez = args.mergexRez, \
                      keymap = args.keymapfile, newnox = args.newnox)
     else:

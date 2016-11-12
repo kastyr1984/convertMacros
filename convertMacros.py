@@ -1,10 +1,10 @@
 import os.path
 import re
 
-from MacroConv.MacroHelpers import detectFileType
+from MacroHelpers import detectFileType
 
-from MacroConv.NoxMacroHandler import NoxMacroHandler
-from MacroConv.MEmuMacroHandler import MEmuMacroHandler
+from NoxMacroHandler import NoxMacroHandler
+from MEmuMacroHandler import MEmuMacroHandler
 
 #this script aims to take all the guesswork out of converting macro scripts
 #between MEmu and NOX
