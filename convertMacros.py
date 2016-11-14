@@ -16,7 +16,10 @@ from MEmuMacroHandler import MEmuMacroHandler
 #big shout out to /u/-Pwnology- for making the scripts that make this a
 #worthwhile endeavor in the first place
             
-def processFiles(infile, outfile, outtype, intype = None, outyRez=720, outxRez = 1280, inyRez = 720, inxRez = 1280, newnox = False, keymap = None):
+def processFiles(infile, outfile, outtype, intype = None, \
+                 outyRez = 720, outxRez = 1280, \
+                 inyRez = 720, inxRez = 1280, \
+                 newnox = False, keymap = None, phone = None):
     #basic filetype detection if intype is not provided
     if not intype:
         intype = detectFileType(infile)
@@ -60,11 +63,13 @@ def processFiles(infile, outfile, outtype, intype = None, outyRez=720, outxRez =
             
         if outMacroHandler:
             for entry in outdata:
-                outfile.write(outMacroHandler.generateLine(entry.time, \
-                                                           entry.presscode, \
-                                                           entry.holdcode, \
-                                                           entry.xPos, \
-                                                           entry.yPos))
+                outline = outMacroHandler.generateLine(entry.time, \
+                                                       entry.presscode, \
+                                                       entry.holdcode, \
+                                                       entry.xPos, \
+                                                       entry.yPos)
+                
+                outfile.write(outline)
                 
                 outfile.write('\n')
                 
@@ -96,7 +101,10 @@ if __name__ == '__main__':
                         help='output file type, nox or memu')
     
     parser.add_argument('--new-nox', dest='newnox', action='store_true', default=False,\
-                            help='output nox files in ScRiPtSePaRaToR style')    
+                            help='output nox files in ScRiPtSePaRaToR style')
+    
+    parser.add_argument('--phone', dest='phone', action='store_true', default=False,\
+                            help='output files with adjustment for phone resolution (testing)')    
     
     args = parser.parse_args()
     
@@ -105,7 +113,8 @@ if __name__ == '__main__':
                      intype = args.intype, \
                      outyRez = args.outyRez, outxRez = args.outxRez, \
                      inyRez = args.inyRez, inxRez = args.inxRez, \
-                     keymap = args.keymapfile, newnox = args.newnox)
+                     keymap = args.keymapfile, newnox = args.newnox, \
+                     phone = args.phone)
     else:
         parser.print_help()
         

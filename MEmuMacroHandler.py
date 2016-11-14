@@ -50,10 +50,10 @@ class MEmuMacroHandler:
             
             #account for differing resolution settings
             if self.inyRez != self.outyRez:
-                yPos = round(yPos * (outyRez / inyRez))
+                yPos = round(yPos * (self.outyRez / self.inyRez))
                 
             if self.inxRez != self.outxRez:
-                xPos = round(xPos * (outxRez / inxRez))
+                xPos = round(xPos * (self.outxRez / self.inxRez))
         
             return MacroLine(time = time, presscode = presscode, holdcode = holdcode, xPos = xPos, yPos = yPos, inyRez = self.inyRez, inxRez = self.inxRez)
         else:

@@ -1,5 +1,7 @@
 import os.path
 
+#from DataTypes import MacroLine
+
 #Misc helper functions for other programs
 
 #Basic filetype detection heuristics
@@ -21,4 +23,3 @@ def detectFileType(file):
         file.seek(origin)
         
         return returnval
-    

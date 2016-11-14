@@ -54,7 +54,7 @@ class NoxMacroHandler:
                 xPos, yPos = keypoint
                 
         #process pos values
-        xPos = int(xPos)
+        xPos = int(xPos) - round(self.outxRez / 80.0)
         #convert y coordinates back
         yPos = inyRez - int(yPos)
         
@@ -153,7 +153,8 @@ class NoxMacroHandler:
         if not self.newnoxout:
             return('|'.join([holdcode, \
                              str(int(self.outyRez - int(yPos))), \
-                             str(int(xPos)), #str(outxRez - xPos), \
+                             #the top bar seems to be a little thicker in NOX
+                             str(int(xPos) + round(self.outxRez / 80.0)), \
                              '0', \
                              '0', \
                              '0', \
