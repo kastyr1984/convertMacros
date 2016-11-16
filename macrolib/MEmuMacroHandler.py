@@ -1,4 +1,4 @@
-from DataTypes import MacroLine
+from macrolib.DataTypes import MacroLine
 
 class MEmuMacroHandler:
     outyRez = None

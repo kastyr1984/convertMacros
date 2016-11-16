@@ -1,9 +1,9 @@
 import os.path
 
-from DataTypes import *
-from MacroHelpers import detectFileType, is_sequence
-from MEmuMacroHandler import *
-from NoxMacroHandler import *
+from macrolib.DataTypes import *
+from macrolib.MacroHelpers import detectFileType, is_sequence
+from macrolib.MEmuMacroHandler import *
+from macrolib.NoxMacroHandler import *
 
 #This function merges one or more "mergefiles" into an "infile"
 #and outputs either to the outfile or to the stdout.

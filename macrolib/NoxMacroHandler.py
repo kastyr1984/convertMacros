@@ -1,5 +1,5 @@
-from DataTypes import MacroLine
-from NoxKeyMap import *
+from macrolib.DataTypes import MacroLine
+from macrolib.NoxKeyMap import *
 
 class NoxMacroHandler:
     outyRez = None

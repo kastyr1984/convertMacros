@@ -1,6 +1,6 @@
 import os.path
 
-#from DataTypes import MacroLine
+#from macrolib.DataTypes import MacroLine
 
 #Misc helper functions for other programs
 
