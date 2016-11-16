@@ -1,127 +1,14 @@
-import os.path
+from macrolib import MergeMacros
 
-from DataTypes import *
-from MacroHelpers import detectFileType
-from MEmuMacroHandler import *
-from NoxMacroHandler import *
-
-def mergeMacros(infile, mergefile, outfile, outtype, outyRez=720, outxRez = 1280, \
-                inyRez = 720, inxRez = 1280, mergexRez = 720, mergeyRez = 1280, \
-                mergeatline = None, newnox = False, keymap = None):
-    myNoxMacroHandler = None
-    myMemuMacroHandler = None
-    
-    indata = []
-    mergedata = []
-    outdata = []
-    
-    intype = detectFileType(infile)
-    mergetype = detectFileType(mergefile)
-    
-    for valtype in (intype, mergetype, outtype):
-        if valtype == 'memu':
-            if not myMEmuMacroHandler:
-                myMemuMacroHandler = MEmuMacroHandler()
-            
-        elif valtype == 'nox':
-            if not myNoxMacroHandler:
-                myNoxMacroHandler = NoxMacroHandler(noxKeyMap = keymap, newnoxout = newnox)
-            
-        else:
-            #TODO raise error here
-            return False
-        
-    if intype == 'memu':
-        myMEmuMacroHandler.setOutRez(outyRez, outxRez)
-        myMEmuMacroHandler.setInRez(inyRez, inxRez)
-        
-        indata = myMEmuMacroHandler.processFile(infile)
-    elif intype == 'nox':
-        myNoxMacroHandler.setOutRez(outyRez, outxRez)
-        
-        indata = myNoxMacroHandler.processFile(infile)
-        
-    if mergetype == 'memu':
-        myMEmuMacroHandler.setOutRez(outyRez, outxRez)
-        myMEmuMacroHandler.setInRez(mergeyRez, mergexRez)
-        
-        mergedata = myMEmuMacroHandler.processFile(mergefile)
-    elif mergetype == 'nox':
-        myNoxMacroHandler.setOutRez(outyRez, outxRez)
-        
-        mergedata = myNoxMacroHandler.processFile(mergefile)
-        
-    baseintime = None
-    basemergetime = None
-    currenttime = None
-    
-    #print(mergedata)
-    
-    #handles when files are to be appended
-    if mergeatline in (None, False):
-        mergeatline = len(indata)
-        
-    if mergeatline <= len(indata):
-        #get lines from infile
-        for line in indata[:mergeatline]:
-            outdata.append(line)
-            currenttime = line.time
-            
-        baseintime = currenttime
-            
-        for line in mergedata:
-            currenttime = baseintime + line.time
-            outdata.append(MacroLine(currenttime, \
-                                     line.presscode, line.holdcode, \
-                                     line.xPos, line.yPos, \
-                                     line.inyRez, line.inxRez))
-    
-        basemergetime = currenttime
-    
-        for line in indata[mergeatline:]:
-            currenttime = line.time + basemergetime
-            
-            outdata.append(MacroLine(currenttime, \
-                                     line.presscode, line.holdcode, \
-                                     line.xPos, line.yPos, \
-                                     line.inyRez, line.inxRez))
-    if outtype == 'memu':
-        if myMEmuMacroHandler:
-            myMEmuMacroHandler.setOutRez(outyRez, outxRez)
-            for entry in outdata:
-                outfile.write(myMEmuMacroHandler.generateLine(entry.time, \
-                                                              entry.presscode, \
-                                                              entry.holdcode, \
-                                                              entry.xPos, \
-                                                              entry.yPos))
-                
-                outfile.write('\n')
-                
-    elif outtype == 'nox':
-        if myNoxMacroHandler:
-            myNoxMacroHandler.setOutRez(outyRez, outxRez)
-            for entry in outdata:
-                outfile.write(myNoxMacroHandler.generateLine(entry.time, \
-                                                            entry.presscode, \
-                                                            entry.holdcode, \
-                                                            entry.xPos, \
-                                                            entry.yPos))
-                
-                outfile.write('\n')
-                
-    else:
-        #TODO raise error here
-        return False
-                
 if __name__ == "__main__":
     import argparse
     import sys
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', dest='infile', nargs='?', type=argparse.FileType('r'), \
+    parser.add_argument('-i', dest='infile', nargs=1, type=argparse.FileType('r'), \
                         required=True, help='input macro file')
-    parser.add_argument('-m', dest='mergefile', nargs='?', type=argparse.FileType('r'), \
-                        required=True, help='macro file to append or merge')    
+    parser.add_argument('-m', dest='mergefiles', nargs='+', type=argparse.FileType('r'), \
+                        required=True, help='macro file(s) to append or merge')    
     parser.add_argument('-o', dest='outfile', nargs='?', type=argparse.FileType('w'),
                          default=sys.stdout, help='output macro file (prints to terminal if none provided)')
     parser.add_argument('-k', dest='keymapfile', nargs='?', type=argparse.FileType('r'),
@@ -154,10 +41,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.infile and args.mergefile and args.outfile and args.outtype:
-        mergeMacros(args.infile, args.mergefile, args.outfile, args.outtype, \
-                    outyRez = args.outyRez, outxRez = args.outxRez, \
-                    inyRez = args.inyRez, inxRez = args.inxRez, \
-                    mergeyRez = args.mergeyRez, mergexRez = args.mergexRez, \
-                     keymap = args.keymapfile, newnox = args.newnox)
+        MergeMacros.mergeMacros(args.infile, args.outfile, args.outtype, args.mergefiles, \
+                                outyRez = args.outyRez, outxRez = args.outxRez, \
+                                inyRez = args.inyRez, inxRez = args.inxRez, \
+                                mergeyRez = args.mergeyRez, mergexRez = args.mergexRez, \
+                                keymap = args.keymapfile, newnox = args.newnox)
     else:
         parser.print_help()
