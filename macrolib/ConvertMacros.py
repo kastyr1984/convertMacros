@@ -17,8 +17,8 @@ from MEmuMacroHandler import MEmuMacroHandler
 #worthwhile endeavor in the first place
             
 def processFiles(infile, outfile, outtype, intype = None, \
-                 outyRez = 720, outxRez = 1280, \
-                 inyRez = 720, inxRez = 1280, \
+                 outyRez = 720.0, outxRez = 1280.0, \
+                 inyRez = 720.0, inxRez = 1280.0, \
                  newnox = False, keymap = None, phone = None):
     #basic filetype detection if intype is not provided
     if not intype:

@@ -1,4 +1,4 @@
-from macrolibs import ConvertMacros
+from macrolib import ConvertMacros
 
 if __name__ == '__main__':
     import argparse

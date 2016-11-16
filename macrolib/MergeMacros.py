@@ -5,11 +5,15 @@ from MacroHelpers import detectFileType, is_sequence
 from MEmuMacroHandler import *
 from NoxMacroHandler import *
 
-def mergeMacros(infile, outfile, outtype, mergefiles, outyRez=720, outxRez = 1280, \
-                inyRez = 720, inxRez = 1280, mergexRez = 720, mergeyRez = 1280, \
+#This function merges one or more "mergefiles" into an "infile"
+#and outputs either to the outfile or to the stdout.
+
+def mergeMacros(infile, outfile, outtype, mergefiles, outyRez = 720.0, outxRez = 1280.0, \
+                inyRez = 720.0, inxRez = 1280.0, mergexRez = 720.0, mergeyRez = 1280.0, \
                 mergeatline = None, newnox = False, keymap = None):
+    
     myNoxMacroHandler = None
-    myMemuMacroHandler = None
+    myMEmuMacroHandler = None
     
     indata = []
     mergedata = []
@@ -23,16 +27,15 @@ def mergeMacros(infile, outfile, outtype, mergefiles, outyRez=720, outxRez = 128
             return False
     
     intype = detectFileType(infile)
-    mergetype = detectFileType(mergefile)
     
-    for valtype in (intype, mergetype, outtype):
+    for valtype in (intype, outtype):
         if valtype == 'memu':
             if not myMEmuMacroHandler:
-                myMemuMacroHandler = MEmuMacroHandler()
+                myMEmuMacroHandler = MEmuMacroHandler(outyRez = outyRez, outxRez = outxRez)
             
         elif valtype == 'nox':
             if not myNoxMacroHandler:
-                myNoxMacroHandler = NoxMacroHandler(noxKeyMap = keymap, newnoxout = newnox)
+                myNoxMacroHandler = NoxMacroHandler(outyRez = outyRez, outxRez = outxRez, noxKeyMap = keymap, newnoxout = newnox)
             
         else:
             #TODO raise error here
@@ -48,16 +51,6 @@ def mergeMacros(infile, outfile, outtype, mergefiles, outyRez=720, outxRez = 128
         
         indata = myNoxMacroHandler.processFile(infile)
         
-    if mergetype == 'memu':
-        myMEmuMacroHandler.setOutRez(outyRez, outxRez)
-        myMEmuMacroHandler.setInRez(mergeyRez, mergexRez)
-        
-        mergedata = myMEmuMacroHandler.processFile(mergefile)
-    elif mergetype == 'nox':
-        myNoxMacroHandler.setOutRez(outyRez, outxRez)
-        
-        mergedata = myNoxMacroHandler.processFile(mergefile)
-        
     baseintime = None
     basemergetime = None
     currenttime = None
@@ -68,30 +61,53 @@ def mergeMacros(infile, outfile, outtype, mergefiles, outyRez=720, outxRez = 128
     if mergeatline in (None, False):
         mergeatline = len(indata)
         
+    #handles when files are merged
     if mergeatline <= len(indata):
         #get lines from infile
         for line in indata[:mergeatline]:
             outdata.append(line)
-            currenttime = line.time
+            currenttime = int(line.time)
             
         baseintime = currenttime
+    
+    for mergefile in mergefiles:
+        mergetype = detectFileType(mergefile)
+        
+        if mergetype == 'memu':
+            if not myMEmuMacroHandler:
+                myMEmuMacroHandler = MEmuMacroHandler(outyRez = outyRez, outxRez = outxRez)
+
+        elif valtype == 'nox':
+            if not myNoxMacroHandler:
+                myNoxMacroHandler = NoxMacroHandler(outyRez = outyRez, outxRez = outxRez, noxKeyMap = keymap, newnoxout = newnox)
+        
+        if mergetype == 'memu':
+            myMEmuMacroHandler.setOutRez(outyRez, outxRez)
+            myMEmuMacroHandler.setInRez(mergeyRez, mergexRez)
             
+            mergedata = myMEmuMacroHandler.processFile(mergefile)
+        elif mergetype == 'nox':
+            myNoxMacroHandler.setOutRez(outyRez, outxRez)
+            
+            mergedata = myNoxMacroHandler.processFile(mergefile)
+                    
         for line in mergedata:
-            currenttime = baseintime + line.time
+            print([currenttime])
+            currenttime = baseintime + int(line.time)
             outdata.append(MacroLine(currenttime, \
                                      line.presscode, line.holdcode, \
                                      line.xPos, line.yPos, \
                                      line.inyRez, line.inxRez))
-    
-        basemergetime = currenttime
-    
-        for line in indata[mergeatline:]:
-            currenttime = line.time + basemergetime
             
-            outdata.append(MacroLine(currenttime, \
-                                     line.presscode, line.holdcode, \
-                                     line.xPos, line.yPos, \
-                                     line.inyRez, line.inxRez))
+        baseintime = currenttime
+    
+    for line in indata[mergeatline:]:
+        currenttime = baseintime + int(line.time)
+        
+        outdata.append(MacroLine(currenttime, \
+                                 line.presscode, line.holdcode, \
+                                 line.xPos, line.yPos, \
+                                 line.inyRez, line.inxRez))
     if outtype == 'memu':
         if myMEmuMacroHandler:
             myMEmuMacroHandler.setOutRez(outyRez, outxRez)

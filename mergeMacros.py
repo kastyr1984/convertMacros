@@ -5,7 +5,7 @@ if __name__ == "__main__":
     import sys
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', dest='infile', nargs=1, type=argparse.FileType('r'), \
+    parser.add_argument('-i', dest='infile', nargs='?', type=argparse.FileType('r'), \
                         required=True, help='input macro file')
     parser.add_argument('-m', dest='mergefiles', nargs='+', type=argparse.FileType('r'), \
                         required=True, help='macro file(s) to append or merge')    
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    if args.infile and args.mergefile and args.outfile and args.outtype:
+    if args.infile and args.mergefiles and args.outfile and args.outtype:
         MergeMacros.mergeMacros(args.infile, args.outfile, args.outtype, args.mergefiles, \
                                 outyRez = args.outyRez, outxRez = args.outxRez, \
                                 inyRez = args.inyRez, inxRez = args.inxRez, \
