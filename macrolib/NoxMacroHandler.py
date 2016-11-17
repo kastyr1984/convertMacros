@@ -54,7 +54,8 @@ class NoxMacroHandler:
                 xPos, yPos = keypoint
                 
         #process pos values
-        xPos = int(xPos) - round(self.outxRez / 80.0)
+        #xPos = int(xPos) - round(self.outxRez / 80.0)
+        xPos = int(xPos)
         #convert y coordinates back
         yPos = inyRez - int(yPos)
         
