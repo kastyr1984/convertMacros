@@ -154,8 +154,7 @@ class NoxMacroHandler:
         if not self.newnoxout:
             return('|'.join([holdcode, \
                              str(int(self.outyRez - int(yPos))), \
-                             #the top bar seems to be a little thicker in NOX
-                             str(int(xPos) + round(self.outxRez / 80.0)), \
+                             str(int(xPos)), \
                              '0', \
                              '0', \
                              '0', \
