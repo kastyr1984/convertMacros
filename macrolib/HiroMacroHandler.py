@@ -128,7 +128,7 @@ class HiroMacroHandler:
         elif holdcode == '2':
             holdstr = 'touchMove'
             
-        return ''.join([holdstr, ' ', presscode, ' ', str(int(xPos)), ' ', str(int(yPos)), '\nsleep ', str(int(sleeptime))])
+        return ''.join([holdstr, ' ', str(int(presscode) - 1), ' ', str(int(xPos)), ' ', str(int(yPos)), '\nsleep ', str(int(sleeptime))])
     
 if __name__ == "__main__":
     mytest = HiroMacroHandler()

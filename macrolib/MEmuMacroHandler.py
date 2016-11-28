@@ -33,7 +33,7 @@ class MEmuMacroHandler:
         self.inxRez = inxRez
         
     def processLine(self, instring):
-        if '--VINPUT--MULTI:1' in instring:
+        if '--VINPUT--MULTI:' in instring:
             splitline = instring.split(':')
             
             #pull the values
