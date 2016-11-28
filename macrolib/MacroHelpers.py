@@ -19,6 +19,8 @@ def detectFileType(file):
             returnval = 'memu'
         elif '|' in inline:
             returnval = 'nox'
+        elif 'DEVICE: ' in inline:
+            returnval = 'hiro'
             
         file.seek(origin)
         

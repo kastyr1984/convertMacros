@@ -5,6 +5,7 @@ from macrolib.MacroHelpers import detectFileType
 
 from macrolib.NoxMacroHandler import NoxMacroHandler
 from macrolib.MEmuMacroHandler import MEmuMacroHandler
+from macrolib.HiroMacroHandler import HiroMacroHandler
 
 #this script aims to take all the guesswork out of converting macro scripts
 #between MEmu and NOX
@@ -39,6 +40,8 @@ def processFiles(infile, outfile, outtype, intype = None, \
         inMacroHandler = MEmuMacroHandler(outyRez, outxRez, inyRez, inxRez)
     elif intype == 'nox':
         inMacroHandler = NoxMacroHandler(outyRez, outxRez, noxKeyMap = keymap, newnoxout = newnox)
+    elif intype == 'hiro':
+        inMacroHandler = HiroMacroHandler(outyRez, outxRez, inyRez, inxRez, hiroKeyMap = keymap)
         
     if inMacroHandler:
         outdata = inMacroHandler.processFile(infile)
@@ -55,6 +58,9 @@ def processFiles(infile, outfile, outtype, intype = None, \
                 outMacroHandler = MEmuMacroHandler(outyRez, outxRez, inyRez, inxRez)
             elif outtype == 'nox':
                 outMacroHandler = NoxMacroHandler(outyRez, outxRez, noxKeyMap = keymap, newnoxout = newnox)
+            elif outtype == 'hiro':
+                outMacroHandler = HiroMacroHandler(outyRez, outxRez, inyRez, inxRez, hiroKeyMap = keymap)
+
             else:
                 #TODO raise error here
                 return False
@@ -62,6 +68,9 @@ def processFiles(infile, outfile, outtype, intype = None, \
             outMacroHandler = inMacroHandler
             
         if outMacroHandler:
+            if outtype == 'hiro':
+                outfile.write(''.join(['DEVICE: ConvertMacro 1.0\nSCREEN_SIZE: ', str(outxRez), 'x', str(outyRez), '\n\n:start\n']))
+            
             for entry in outdata:
                 outline = outMacroHandler.generateLine(entry.time, \
                                                        entry.presscode, \
@@ -73,4 +82,5 @@ def processFiles(infile, outfile, outtype, intype = None, \
                 
                 outfile.write('\n')
                 
-                
+            if outtype == 'hiro':
+                outfile.write('\n\n:end\n')

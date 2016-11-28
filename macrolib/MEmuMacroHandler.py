@@ -7,7 +7,7 @@ class MEmuMacroHandler:
     inxRez = None
     handlertype = 'memu'
     
-    def __init__(self, outyRez=720.0, outxRez = 1280.0, inyRez = 720.0, inxRez = 1280.0):
+    def __init__(self, outyRez = 720.0, outxRez = 1280.0, inyRez = 720.0, inxRez = 1280.0):
         self.setOutRez(outyRez, outxRez)
         
         self.setInRez(inyRez, inxRez)
@@ -30,7 +30,7 @@ class MEmuMacroHandler:
             inxRez = float(inxRez)
             
         self.inyRez = inyRez
-        self.inxRez = inxRez        
+        self.inxRez = inxRez
         
     def processLine(self, instring):
         if '--VINPUT--MULTI:1' in instring:

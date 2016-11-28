@@ -23,9 +23,9 @@ if __name__ == '__main__':
                         help='output file y resolution')
     
     parser.add_argument('--intype', dest='intype', default=None, \
-                        help='input file type, nox or memu')
+                        help='input file type, nox or memu or hiro')
     parser.add_argument('--outtype', dest='outtype', required=True, \
-                        help='output file type, nox or memu')
+                        help='output file type, nox or memu or hiro')
     
     parser.add_argument('--new-nox', dest='newnox', action='store_true', default=False,\
                             help='output nox files in ScRiPtSePaRaToR style')
