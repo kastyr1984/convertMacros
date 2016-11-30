@@ -165,3 +165,4 @@ class NoxMacroHandler:
             return''.join(['0ScRiPtSePaRaToR', str(int(self.outxRez)), '|', str(int(self.outyRez)), \
                            '|MULTI:', presscode, ':', holdcode, ':', str(int(xPos)), ':', \
                            str(int(yPos)), 'ScRiPtSePaRaToR', str(int(round(float(time) / 1000.0)))])
+        

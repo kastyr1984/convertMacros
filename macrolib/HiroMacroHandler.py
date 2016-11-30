@@ -90,7 +90,21 @@ class HiroMacroHandler:
             elif touchsplit[0] == 'touchUp':
                 presscode = str(int(touchsplit[1]) + 1)
                 holdcode = 1
+            elif touchsplit[0] == 'touchPress':
+                presscode = str(int(touchsplit[1]) + 1)
+                holdcode = 0
+                xPos = int(touchsplit[2])
+                yPos = int(touchsplit[3])
                 
+                #account for differing resolution settings
+                if self.inyRez != self.outyRez:
+                    yPos = round(yPos * (self.outyRez / self.inyRez))
+                    
+                if self.inxRez != self.outxRez:
+                    xPos = round(xPos * (self.outxRez / self.inxRez))
+                    
+                return (MacroLine(time = time, presscode = presscode, holdcode = holdcode, xPos = xPos, yPos = yPos, inyRez = self.inyRez, inxRez = self.inxRez), \
+                        MacroLine(time = time + 100000, presscode = presscode, holdcode = 0, xPos = 0, yPos = 0, inyRez = self.inyRez, inxRez = self.inxRez))
             else:
                 return None
             
@@ -103,7 +117,11 @@ class HiroMacroHandler:
             returnval = self.processLine(line)
             
             if returnval:
-                returndata.append(returnval)
+                if type(returnval) == tuple:
+                    for entry in returnval:
+                        returndata.append(entry)
+                else:
+                    returndata.append(returnval)
                 
         self.resetTime(0)
     
@@ -128,7 +146,9 @@ class HiroMacroHandler:
         elif holdcode == '2':
             holdstr = 'touchMove'
             
-        return ''.join([holdstr, ' ', str(int(presscode) - 1), ' ', str(int(xPos)), ' ', str(int(yPos)), '\nsleep ', str(int(sleeptime))])
+        return ' '.join([holdstr, str(int(presscode) - 1), str(int(xPos)), \
+                         str(int(self.outyRez - int(yPos))), '\nsleep', \
+                         str(int(sleeptime))])
     
 if __name__ == "__main__":
     mytest = HiroMacroHandler()
