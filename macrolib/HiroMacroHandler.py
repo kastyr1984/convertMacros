@@ -6,6 +6,7 @@ from macrolib.DataTypes import MacroLine
 #from DataTypes import MacroLine
 
 class HiroMacroHandler:
+    compress = False
     outyRez = None
     outxRez = None
     inyRez = None
@@ -138,17 +139,51 @@ class HiroMacroHandler:
         self.currenttime = convertedtime
         
         holdstr = ''
-        
+    
         if holdcode == '0':
             holdstr = 'touchDown'
         elif holdcode == '1':
             holdstr = 'touchUp'
         elif holdcode == '2':
             holdstr = 'touchMove'
+        elif holdcode == '132':
+            holdstr = 'touchPress'
             
         return ' '.join([holdstr, str(int(presscode) - 1), str(xPos), \
                          str(int(yPos)), '\nsleep', \
                          str(int(sleeptime))])
+    
+    def generateCompressedLines(self, linedata):
+        matchedlines = {}
+        returndata = []
+        
+        for line in linedata:
+            if line.holdcode == '0':
+                if line.presscode not in matchedlines:
+                    matchedlines[line.presscode] = line
+                else:
+                    #todo: raise error here
+                    pass
+            elif line.holdcode == '1':
+                if line.presscode in matchedlines:
+                    baseline = matchedlines[line.presscode]
+                    del matchedlines[line.presscode]
+                    
+                    returndata.append(MacroLine(time = line.time, \
+                                                presscode = baseline.presscode, \
+                                                holdcode = '132', \
+                                                xPos = baseline.xPos, \
+                                                yPos = baseline.yPos, \
+                                                inyRez = baseline.inyRez, \
+                                                inxRez = baseline.inxRez))
+                    
+                else:
+                    #todo: raise error here
+                    pass
+            else:
+                returndata.append(line)
+                    
+        return returndata
     
 if __name__ == "__main__":
     mytest = HiroMacroHandler()

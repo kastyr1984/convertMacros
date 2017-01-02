@@ -30,8 +30,8 @@ if __name__ == '__main__':
     parser.add_argument('--new-nox', dest='newnox', action='store_true', default=False,\
                             help='output nox files in ScRiPtSePaRaToR style')
     
-    parser.add_argument('--phone', dest='phone', action='store_true', default=False,\
-                            help='output files with adjustment for phone resolution (testing)')    
+    parser.add_argument('--compress', dest='compress', action='store_true', default=False,\
+                            help='output Hiro files with smaller file size')
     
     args = parser.parse_args()
     
@@ -41,7 +41,7 @@ if __name__ == '__main__':
                                    outyRez = args.outyRez, outxRez = args.outxRez, \
                                    inyRez = args.inyRez, inxRez = args.inxRez, \
                                    keymap = args.keymapfile, newnox = args.newnox, \
-                                   phone = args.phone)
+                                   compress = args.compress)
     else:
         parser.print_help()
         

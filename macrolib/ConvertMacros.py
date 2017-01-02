@@ -20,7 +20,7 @@ from macrolib.HiroMacroHandler import HiroMacroHandler
 def processFiles(infile, outfile, outtype, intype = None, \
                  outyRez = 720.0, outxRez = 1280.0, \
                  inyRez = 720.0, inxRez = 1280.0, \
-                 newnox = False, keymap = None, phone = None):
+                 newnox = False, keymap = None, compress = None):
     #basic filetype detection if intype is not provided
     if not intype:
         intype = detectFileType(infile)
@@ -70,6 +70,9 @@ def processFiles(infile, outfile, outtype, intype = None, \
         if outMacroHandler:
             if outtype == 'hiro':
                 outfile.write(''.join(['DEVICE: ConvertMacro 1.0\nSCREEN_SIZE: ', str(outxRez), 'x', str(outyRez), '\n\n:start\n']))
+                
+                if compress:
+                    outdata = outMacroHandler.generateCompressedLines(outdata)
             
             for entry in outdata:
                 outline = outMacroHandler.generateLine(entry.time, \
