@@ -149,9 +149,13 @@ class HiroMacroHandler:
         elif holdcode == '132':
             holdstr = 'touchPress'
             
-        return ' '.join([holdstr, str(int(presscode) - 1), str(xPos), \
-                         str(int(yPos)), '\nsleep', \
-                         str(int(sleeptime))])
+        return ''.join(['sleep ', \
+                         str(int(sleeptime)), \
+                         '\n', \
+                         holdstr, ' ', \
+                         str(int(presscode) - 1),  ' ', \
+                         str(xPos), ' ', \
+                         str(int(yPos))])
     
     def generateCompressedLines(self, linedata):
         matchedlines = {}
