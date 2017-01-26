@@ -2,6 +2,7 @@ from macrolib.DataTypes import MacroLine
 from macrolib.NoxKeyMap import *
 
 class NoxMacroHandler:
+    rotated = False
     outyRez = None
     outxRez = None
     keyMap = None
@@ -16,6 +17,9 @@ class NoxMacroHandler:
             
         if newnoxout:
             self.newnoxout = newnoxout
+            
+    def checkRotated(self):
+        return ((self.inxRez > self.inyRez) != (self.outxRez > self.outyRez))
             
     def setOutRez(self, outyRez, outxRez):
         if not isinstance(outyRez, float):
@@ -120,11 +124,22 @@ class NoxMacroHandler:
             yPos = int(yPos)
             
             #account for differing resolution settings
-            if inyRez != self.outyRez:
-                yPos = round(yPos * (self.outyRez / float(inyRez)))
-            
-            if inxRez != self.outxRez:
-                xPos = round(xPos * (self.outxRez / float(inxRez)))   
+            if checkRotated(inxRez, inyRez):
+                oldxPos = xPos
+                xPos = yPos
+                yPos = oldxPos
+                
+                if self.inxRez != self.outyRez:
+                    xPos = round(yPos * (self.outyRez / inxRez))
+                    
+                if self.inyRez != self.outxRez:
+                    yPos = round(xPos * (self.outxRez / inyRez))                
+            else:
+                if inyRez != self.outyRez:
+                    yPos = round(yPos * (self.outyRez / float(inyRez)))
+                
+                if inxRez != self.outxRez:
+                    xPos = round(xPos * (self.outxRez / float(inxRez)))
             
             return MacroLine(time = time, presscode = '1', holdcode = holdcode, xPos = xPos, yPos = yPos, inyRez = inyRez, inxRez = inxRez)
         elif 'MSBRL:' in instring:
@@ -149,8 +164,13 @@ class NoxMacroHandler:
                     
         return returndata
     
-    def generateLine(self, time, presscode, holdcode, xPos, yPos):
+    def generateLine(self, time, presscode, holdcode, xPos, yPos, flipX = False, flipY = False):
         #Mash the values together, performing basic conversions where needed
+        if flipX:
+            xPos = int(self.outxRez - xPos)
+        if flipY:
+            yPos = int(self.outyRez - yPos)
+        
         if not self.newnoxout:
             return('|'.join([holdcode, \
                              str(int(self.outyRez - int(yPos))), \

@@ -33,6 +33,11 @@ if __name__ == '__main__':
     parser.add_argument('--compress', dest='compress', action='store_true', default=False,\
                             help='output Hiro files with smaller file size')
     
+    parser.add_argument('--flip-x', dest='flipX', action='store_true', default=False,\
+                            help='flip output X axis')    
+    parser.add_argument('--flip-y', dest='flipY', action='store_true', default=False,\
+                            help='flip output Y axis')      
+
     args = parser.parse_args()
     
     if args.infile and args.outfile and args.outtype:
@@ -41,7 +46,8 @@ if __name__ == '__main__':
                                    outyRez = args.outyRez, outxRez = args.outxRez, \
                                    inyRez = args.inyRez, inxRez = args.inxRez, \
                                    keymap = args.keymapfile, newnox = args.newnox, \
-                                   compress = args.compress)
+                                   compress = args.compress, flipX = args.flipX, \
+                                   flipY = args.flipY)
     else:
         parser.print_help()
         

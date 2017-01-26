@@ -20,7 +20,8 @@ from macrolib.HiroMacroHandler import HiroMacroHandler
 def processFiles(infile, outfile, outtype, intype = None, \
                  outyRez = 720.0, outxRez = 1280.0, \
                  inyRez = 720.0, inxRez = 1280.0, \
-                 newnox = False, keymap = None, compress = None):
+                 newnox = False, keymap = None, compress = None, \
+                 flipX = False, flipY = False):
     #basic filetype detection if intype is not provided
     if not intype:
         intype = detectFileType(infile)
@@ -79,7 +80,9 @@ def processFiles(infile, outfile, outtype, intype = None, \
                                                        entry.presscode, \
                                                        entry.holdcode, \
                                                        entry.xPos, \
-                                                       entry.yPos)
+                                                       entry.yPos, \
+                                                       flipX = flipX, \
+                                                       flipY = flipY)
                 
                 outfile.write(outline)
                 

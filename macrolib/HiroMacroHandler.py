@@ -7,6 +7,7 @@ from macrolib.DataTypes import MacroLine
 
 class HiroMacroHandler:
     compress = False
+    rotated = False
     outyRez = None
     outxRez = None
     inyRez = None
@@ -23,6 +24,9 @@ class HiroMacroHandler:
         if hiroKeyMap:
             self.keyMap = None
             
+    def checkRotated(self):
+        return ((self.inxRez > self.inyRez) != (self.outxRez > self.outyRez))
+            
     def setOutRez(self, outyRez, outxRez):
         if not isinstance(outyRez, float):
             outyRez = float(outyRez)
@@ -33,15 +37,27 @@ class HiroMacroHandler:
         self.outyRez = outyRez
         self.outxRez = outxRez
         
+        if self.inxRez and self.inyRez:
+            self.rotated = self.checkRotated()
+            
+        print(self.rotated)
+        print([self.inxRez, self.outxRez, self.inyRez, self.outyRez])
+        
     def setInRez(self, inyRez, inxRez):
         if not isinstance(inyRez, float):
-            outyRez = float(inyRez)
+            inyRez = float(inyRez)
             
         if not isinstance(inxRez, float):
             inxRez = float(inxRez)
             
         self.inyRez = inyRez
         self.inxRez = inxRez
+        
+        if self.outxRez and self.outyRez:
+            self.rotated = self.checkRotated()
+            
+        print(self.rotated)
+        print([self.inxRez, self.outxRez, self.inyRez, self.outyRez])
         
     def resetTime(self, time = 0):
         self.currenttime = time
@@ -69,11 +85,22 @@ class HiroMacroHandler:
                 yPos = int(touchsplit[3])
                 
                 #account for differing resolution settings
-                if self.inyRez != self.outyRez:
-                    yPos = round(yPos * (self.outyRez / self.inyRez))
+                if self.rotated:
+                    oldxPos = xPos
+                    xPos = yPos
+                    yPos = oldxPos
                     
-                if self.inxRez != self.outxRez:
-                    xPos = round(xPos * (self.outxRez / self.inxRez))
+                    if self.inxRez != self.outyRez:
+                        xPos = round(yPos * (self.outyRez / self.inxRez))
+                        
+                    if self.inyRez != self.outxRez:
+                        yPos = round(xPos * (self.outxRez / self.inyRez))
+                else:
+                    if self.inyRez != self.outyRez:
+                        yPos = round(yPos * (self.outyRez / self.inyRez))
+                        
+                    if self.inxRez != self.outxRez:
+                        xPos = round(xPos * (self.outxRez / self.inxRez))
                     
             elif touchsplit[0] == 'touchMove':
                 presscode = str(int(touchsplit[1]) + 1)
@@ -82,11 +109,22 @@ class HiroMacroHandler:
                 yPos = int(touchsplit[3])
                 
                 #account for differing resolution settings
-                if self.inyRez != self.outyRez:
-                    yPos = round(yPos * (self.outyRez / self.inyRez))
+                if self.rotated:
+                    oldxPos = xPos
+                    xPos = yPos
+                    yPos = oldxPos
                     
-                if self.inxRez != self.outxRez:
-                    xPos = round(xPos * (self.outxRez / self.inxRez))
+                    if self.inxRez != self.outyRez:
+                        xPos = round(yPos * (self.outyRez / self.inxRez))
+                        
+                    if self.inyRez != self.outxRez:
+                        yPos = round(xPos * (self.outxRez / self.inyRez))
+                else:
+                    if self.inyRez != self.outyRez:
+                        yPos = round(yPos * (self.outyRez / self.inyRez))
+                        
+                    if self.inxRez != self.outxRez:
+                        xPos = round(xPos * (self.outxRez / self.inxRez))
                     
             elif touchsplit[0] == 'touchUp':
                 presscode = str(int(touchsplit[1]) + 1)
@@ -98,11 +136,22 @@ class HiroMacroHandler:
                 yPos = int(touchsplit[3])
                 
                 #account for differing resolution settings
-                if self.inyRez != self.outyRez:
-                    yPos = round(yPos * (self.outyRez / self.inyRez))
+                if self.rotated:
+                    oldxPos = xPos
+                    xPos = yPos
+                    yPos = oldxPos
                     
-                if self.inxRez != self.outxRez:
-                    xPos = round(xPos * (self.outxRez / self.inxRez))
+                    if self.inxRez != self.outyRez:
+                        xPos = round(yPos * (self.outyRez / self.inxRez))
+                        
+                    if self.inyRez != self.outxRez:
+                        yPos = round(xPos * (self.outxRez / self.inyRez))
+                else:
+                    if self.inyRez != self.outyRez:
+                        yPos = round(yPos * (self.outyRez / self.inyRez))
+                        
+                    if self.inxRez != self.outxRez:
+                        xPos = round(xPos * (self.outxRez / self.inxRez))
                     
                 return (MacroLine(time = time, presscode = presscode, holdcode = holdcode, xPos = xPos, yPos = yPos, inyRez = self.inyRez, inxRez = self.inxRez), \
                         MacroLine(time = time + 100000, presscode = presscode, holdcode = 0, xPos = 0, yPos = 0, inyRez = self.inyRez, inxRez = self.inxRez))
@@ -131,7 +180,7 @@ class HiroMacroHandler:
                     
         return returndata
     
-    def generateLine(self, time, presscode, holdcode, xPos, yPos):
+    def generateLine(self, time, presscode, holdcode, xPos, yPos, flipX = False, flipY = False):
         #performing basic conversions where needed
         convertedtime = int(round(float(time) / 1000.0))
         sleeptime = convertedtime - self.currenttime
@@ -148,6 +197,11 @@ class HiroMacroHandler:
             holdstr = 'touchMove'
         elif holdcode == '132':
             holdstr = 'touchPress'
+            
+        if flipX:
+            xPos = int(self.outxRez - xPos)
+        if flipY:
+            yPos = int(self.outyRez - yPos)
             
         return ''.join(['sleep ', \
                          str(int(sleeptime)), \
