@@ -124,7 +124,7 @@ class NoxMacroHandler:
             yPos = int(yPos)
             
             #account for differing resolution settings
-            if checkRotated(inxRez, inyRez):
+            if self.checkRotated(inxRez, inyRez):
                 oldxPos = xPos
                 xPos = yPos
                 yPos = oldxPos
