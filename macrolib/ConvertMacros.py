@@ -1,11 +1,13 @@
+import datetime
 import os.path
 import re
 
 from macrolib.MacroHelpers import detectFileType
 
+from macrolib.AutoTouchMacroHandler import AutoTouchMacroHandler
+from macrolib.HiroMacroHandler import HiroMacroHandler
 from macrolib.NoxMacroHandler import NoxMacroHandler
 from macrolib.MEmuMacroHandler import MEmuMacroHandler
-from macrolib.HiroMacroHandler import HiroMacroHandler
 
 #this script aims to take all the guesswork out of converting macro scripts
 #between MEmu and NOX
@@ -43,6 +45,8 @@ def processFiles(infile, outfile, outtype, intype = None, \
         inMacroHandler = NoxMacroHandler(outyRez, outxRez, noxKeyMap = keymap, newnoxout = newnox)
     elif intype == 'hiro':
         inMacroHandler = HiroMacroHandler(outyRez, outxRez, inyRez, inxRez, hiroKeyMap = keymap)
+    elif intype == 'autotouch':
+        inMacroHandler = AutoTouchMacroHandler(outyRez, outxRez, inyRez, inxRez, autoTouchKeyMap = keymap)
         
     if inMacroHandler:
         outdata = inMacroHandler.processFile(infile)
@@ -61,6 +65,8 @@ def processFiles(infile, outfile, outtype, intype = None, \
                 outMacroHandler = NoxMacroHandler(outyRez, outxRez, noxKeyMap = keymap, newnoxout = newnox)
             elif outtype == 'hiro':
                 outMacroHandler = HiroMacroHandler(outyRez, outxRez, inyRez, inxRez, hiroKeyMap = keymap)
+            elif outtype == 'autotouch':
+                outMacroHandler = AutoTouchMacroHandler(outyRez, outxRez, inyRez, inxRez, autoTouchKeyMap = keymap)
 
             else:
                 #TODO raise error here
@@ -74,7 +80,11 @@ def processFiles(infile, outfile, outtype, intype = None, \
                 
                 if compress:
                     outdata = outMacroHandler.generateCompressedLines(outdata)
-            
+                    
+            elif outtype == 'autotouch':
+                outfile.write(''.join(['CREATE_TIME=', datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'), \
+                                       ';\nSCREEN_SIZE="', str(int(outyRez)), 'x', str(int(outxRez)), '";\n']))
+
             for entry in outdata:
                 outline = outMacroHandler.generateLine(entry.time, \
                                                        entry.presscode, \

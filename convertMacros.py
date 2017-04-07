@@ -23,12 +23,12 @@ if __name__ == '__main__':
                         help='output file y resolution')
     
     parser.add_argument('--intype', dest='intype', default=None, \
-                        help='input file type, nox or memu or hiro')
+                        help='input file type, nox or memu or hiro or autotouch')
     parser.add_argument('--outtype', dest='outtype', required=True, \
-                        help='output file type, nox or memu or hiro')
+                        help='output file type, nox or memu or hiro or autotouch')
     
     parser.add_argument('--new-nox', dest='newnox', action='store_true', default=False,\
-                            help='output nox files in ScRiPtSePaRaToR style')
+                            help='output Nox files in ScRiPtSePaRaToR style')
     
     parser.add_argument('--compress', dest='compress', action='store_true', default=False,\
                             help='output Hiro files with smaller file size')
