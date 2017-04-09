@@ -81,6 +81,8 @@ def mergeMacros(infile, outfile, outtype, mergefiles, outyRez = 720.0, outxRez =
         baseintime = currenttime
     
     for mergefile in mergefiles:
+        #print(mergefile)
+        
         mergetype = detectFileType(mergefile)
         
         if mergetype == 'memu':
@@ -112,7 +114,6 @@ def mergeMacros(infile, outfile, outtype, mergefiles, outyRez = 720.0, outxRez =
             mergedata = myHiroMacroHandler.processFile(mergefile)
                     
         for line in mergedata:
-            print([currenttime])
             currenttime = baseintime + int(line.time)
             outdata.append(MacroLine(currenttime, \
                                      line.presscode, line.holdcode, \

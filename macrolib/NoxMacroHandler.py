@@ -18,8 +18,13 @@ class NoxMacroHandler:
         if newnoxout:
             self.newnoxout = newnoxout
             
-    def checkRotated(self):
-        return ((self.inxRez > self.inyRez) != (self.outxRez > self.outyRez))
+    def checkRotated(self, inxRez = None, inyRez = None):
+        if inxRez == None:
+            inxRez = self.inxRez
+        if inyRez == None:
+            inyRez = self.inyRez
+        
+        return ((inxRez > inyRez) != (self.outxRez > self.outyRez))
             
     def setOutRez(self, outyRez, outxRez):
         if not isinstance(outyRez, float):
